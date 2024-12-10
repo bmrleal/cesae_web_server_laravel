@@ -1,23 +1,13 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-
-Route::get('/hello', function () {
-    return "Olá!!!";
-});
-
-Route::get('/hello/{name}', function ($name) {
-    return "Olá, $name!!!";
-})->middleware('auth');
-
-Route::get('/contacts', function () {
-    return view('contacts');
-})->name('contacts');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -29,9 +19,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::fallback(function () {
-    // return view('welcome');
-    return redirect()->route('home');
-})->name('fallback');
+Route::middleware('auth')->group(function() {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+});
+
+Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('customers.show');
 
 require __DIR__.'/auth.php';
