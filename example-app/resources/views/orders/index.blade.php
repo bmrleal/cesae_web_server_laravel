@@ -1,5 +1,7 @@
 <h1>Orders</h1>
 
+<p><a href="{{ route('orders.create') }}">New order</a></p>
+
 <table>
     <thead>
         <tr>

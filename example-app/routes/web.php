@@ -21,7 +21,9 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function() {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->where('id', '[0-9]+')->name('orders.show');
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 });
 
 Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('customers.show');
