@@ -24,6 +24,9 @@ Route::middleware('auth')->group(function() {
     Route::get('/orders/{id}', [OrderController::class, 'show'])->where('id', '[0-9]+')->name('orders.show');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::patch('/orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('/orders/{id}/destroy', [OrderController::class, 'destroy'])->name('orders.destroy');
 });
 
 Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('customers.show');
