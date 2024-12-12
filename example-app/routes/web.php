@@ -6,7 +6,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect()->route('orders.index');
 })->name('home');
 
 Route::get('/dashboard', function () {
@@ -29,6 +30,9 @@ Route::middleware('auth')->group(function() {
     Route::delete('/orders/{id}/destroy', [OrderController::class, 'destroy'])->name('orders.destroy');
 });
 
-Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('customers.show');
+Route::middleware('auth')->group(function() {
+    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('customers.show');
+});
 
 require __DIR__.'/auth.php';
