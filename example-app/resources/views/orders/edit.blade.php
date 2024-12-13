@@ -22,8 +22,8 @@
                 <p class="text-xl my-5"><b>Amount:</b> {{ $order->amount }}</p>
 
                 <div class="my-5">
-                    <label for="status" class="block text-gray-700 text-xl font-bold mb-2">Status</label>
-                    <select name="status" id="status" required>
+                    <x-input-label for="status">Status</x-input-label>
+                    <select name="status" id="status" required class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                         <option value="unpaid" {{ $order->status == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
                         <option value="paid" {{ $order->status == 'paid' ? 'selected' : '' }}>Paid</option>
                         <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
@@ -35,12 +35,11 @@
                 <button class="text-blue-700 hover:text-blue-500 text-xl font-bold py-2 px-4">Save</button>
             </form>
 
+
             @if ($errors->any())
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                <div class="my-10">
+                    <x-input-error :messages="$errors->all()"></x-input-error>
+                </div>
             @endif
         </div>
     </div>
