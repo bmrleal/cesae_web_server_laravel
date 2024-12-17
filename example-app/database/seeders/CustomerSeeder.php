@@ -28,6 +28,7 @@ class CustomerSeeder extends Seeder
         //     "created_at" => date("Y/m/d h:m:s")
         // ]);
 
+        // Utilização da CustomerFactory para gerar 50 customers aleatoriamente.
         Customer::factory()
             ->count(50)
             ->create();

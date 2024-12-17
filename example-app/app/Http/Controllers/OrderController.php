@@ -16,6 +16,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        // Versão alternativa para obtenção da lista de orders.
         // if ($request->filled('status')) {
         //     $status = $request->input('status');
 
@@ -24,14 +25,21 @@ class OrderController extends Controller
         // else {
         //     return view('orders.index', ['orders' => Order::paginate(20)]);
         // }
+
+        // Obtenção do valor do critério de pesquisa por "status".
         $status = $request->input('status');
 
+        /*
+        Obtenção da lista de orders, usando cláusula condicional para adicionar "where clause" caso o critério de pesquisa por "status" esteja preenchido.
+        No final, paginam-se os resultados (20 a 20) e indica-se que a "query string" (nomeadamente com os critérios de pesquisa) deve ser mantida durante a paginação.
+        */
         $orders = Order::when($status, function ($query, $status) {
                 return $query->where('status', $status);
             })
             ->paginate()
             ->withQueryString();
 
+        // Retorno na view "orders.index", injectando a lista de orders como parâmetro.
         return view('orders.index', ['orders' => $orders]);
     }
 
@@ -51,6 +59,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        // Regras de validação para os campos do formulário.
         $request->validate([
             'customer' => 'required|integer',
             'item' => 'required|min:1|integer',
@@ -58,6 +67,7 @@ class OrderController extends Controller
             'amount' => 'required|decimal:0,2|min:0.01'
         ]);
 
+        // Criação de novo objecto Order e atribuição de valores às suas propriedades com base no que vem do formulário.
         $order = new Order;
 
         $order->customer_id = $request->customer;
@@ -67,8 +77,10 @@ class OrderController extends Controller
         $order->ordered_at = now();
         $order->status = "unpaid";
         
+        // Gravação da nova order na base de dados.
         $order->save();
 
+        // Após gravação, redirecciona-se para a view "orders.index".
         return redirect()->route('orders.index');
     }
 
@@ -77,6 +89,7 @@ class OrderController extends Controller
      */
     public function show(int $id)
     {
+        // Obtenção (a partir da bd) da order com id = $id e retorno da view "orders.show" com a order como parâmetro da mesma.
         return view('orders.show', ['order' => Order::find($id)]);
     }
 
@@ -85,6 +98,7 @@ class OrderController extends Controller
      */
     public function edit(int $id)
     {
+        // Obtenção (a partir da bd) da order com id = $id e retorno da view "orders.edit" com a order como parâmetro da mesma.
         return view('orders.edit', ['order' => Order::find($id)]);
     }
 
@@ -95,16 +109,21 @@ class OrderController extends Controller
     {
         // dd($request);
 
+        // Regras de validação para os campos do formulário.
         $request->validate([
             'status' => ['required', Rule::in(['unpaid', 'paid', 'processing', 'delivering', 'delivered'])],
         ]);
 
+        // Obtenção (a partir da base de dados da order com id = $id).
         $order = Order::find($id);
 
+        // Actualização da coluna "status".
         $order->status = $request->status;
         
+        // Gravação da order na base de dados, já com o "status" alterado.
         $order->save();
 
+        // Após gravação, redirecciona-se para a view "orders.index".
         return redirect()->route('orders.index');
     }
 
@@ -113,8 +132,10 @@ class OrderController extends Controller
      */
     public function destroy(int $id)
     {
+        // Eliminação da order, directamente a partir do seu id.
         Order::destroy($id);
 
+        // Após eliminação, redirecciona-se para a view "orders.index".
         return redirect()->route('orders.index');
     }
 }

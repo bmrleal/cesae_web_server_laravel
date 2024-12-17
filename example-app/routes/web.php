@@ -20,19 +20,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+/*
+Rotas relacionadas com as orders (lista e CRUD).
+O middleware "auth" valida que o acesso às rotas apenas é possível para utilizadores autenticados.
+*/
 Route::middleware('auth')->group(function() {
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{id}', [OrderController::class, 'show'])->where('id', '[0-9]+')->name('orders.show');
-    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
-    Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
-    Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
-    Route::patch('/orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
-    Route::delete('/orders/{id}/destroy', [OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Lista de orders.
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->where('id', '[0-9]+')->name('orders.show'); // Detalhe de uma order.
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create'); // Formulário para criação de nova order.
+    Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store'); // Gravação, na bd, de nova order.
+    Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit'); // Formulário para edição (do "status") de order.
+    Route::patch('/orders/{id}/update', [OrderController::class, 'update'])->name('orders.update'); // Gravação, na bd, das alterações a uma order.
+    Route::delete('/orders/{id}/destroy', [OrderController::class, 'destroy'])->name('orders.destroy'); // Eliminção (na bd) de order.
 });
-
+/*
+Rotas relacionadas com os customers (lista e vista de detalhe).
+O middleware "auth" valida que o acesso às rotas apenas é possível para utilizadores autenticados.
+*/
 Route::middleware('auth')->group(function() {
-    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
-    Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('customers.show');
+    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index'); // Lista de customers.
+    Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('customers.show'); // Detalhe de um customer.
 });
 
 require __DIR__.'/auth.php';

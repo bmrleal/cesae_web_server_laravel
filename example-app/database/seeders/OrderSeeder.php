@@ -14,6 +14,7 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
+        // Utilização da CustomerFactory para gerar 80 customers aleatoriamente.
         Order::factory()
             ->count(80)
             ->create();

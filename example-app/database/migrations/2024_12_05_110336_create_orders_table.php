@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained()->onUpdate('cascade')->onDelete('cascade'); // Coluna "customer_id", que é Foreign key para a coluna "id" da tabela "customers". O método "constrained" é responsável por validar a utilização das naming conventions.
             $table->datetime('ordered_at');
             $table->unsignedBigInteger('item');
             $table->unsignedSmallInteger('quantity');
