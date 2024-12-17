@@ -22,7 +22,7 @@
 
                 <div class="my-5">
                     <x-input-label for="item">Item</x-input-label>
-                    <x-text-input type="number" name="item" id="item"  min="1" value="{{ old('item') }}">Item</x-text-input>
+                    <x-text-input type="number" name="item" id="item"  min="1" value="{{ old('item') }}"></x-text-input>
                 </div>
 
                 <div class="my-5">

@@ -12,9 +12,25 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('customers.index', ['customers' => Customer::all()]);
+        $first_name = $request->input('first_name');
+        $last_name = $request->input('last_name');
+        $country = $request->input('country');
+
+        $customers = Customer::when($first_name, function ($query, $first_name) {
+            return $query->where('first_name', 'like', "%$first_name%");
+        })
+        ->when($last_name, function ($query, $last_name) {
+            return $query->where('last_name', 'like', "%$last_name%");
+        })
+        ->when($country, function ($query, $country) {
+            return $query->where('country', 'like', "%$country%");
+        })
+        ->paginate(20)
+        ->withQueryString();
+
+        return view('customers.index', ['customers' => $customers]);
     }
 
     /**

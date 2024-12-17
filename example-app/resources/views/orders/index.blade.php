@@ -9,6 +9,23 @@
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <p><a href="{{ route('orders.create') }}" class="text-blue-700 hover:text-blue-500 text-xl font-bold py-2 px-4">New order</a></p>
 
+            <div class="my-5 w-full sm:w-1/2 text-right inline">
+                <form method="get" action="">
+                    <div class="mx-1 inline">
+                        <x-input-label for="status" class="inline">Status</x-input-label>
+                        <select name="status" id="status" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            <option value=""></option>
+                            <option value="unpaid" {{ Request::get('status') == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
+                            <option value="paid" {{ Request::get('status') == 'paid' ? 'selected' : '' }}>Paid</option>
+                            <option value="processing" {{ Request::get('status') == 'processing' ? 'selected' : '' }}>Processing</option>
+                            <option value="delivering" {{ Request::get('status') == 'delivering' ? 'selected' : '' }}>Delivering</option>
+                            <option value="delivered" {{ Request::get('status') == 'delivered' ? 'selected' : '' }}>Delivered</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="text-blue-700 hover:text-blue-500 text-xl font-bold py-2 px-4">Search</button>
+                </form>
+            </div>
+
             <table class="w-full my-10 table-auto">
                 <thead>
                     <tr>
@@ -31,6 +48,10 @@
                     @endforeach
                 </tbody>
             </table>
+    
+            <div class="container my-10">
+                {{ $orders->links() }}
+            </div>
         </div>
     </div>
 </x-app-layout>

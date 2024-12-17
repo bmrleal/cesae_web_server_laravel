@@ -14,9 +14,25 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('orders.index', ['orders' => Order::all()]);
+        // if ($request->filled('status')) {
+        //     $status = $request->input('status');
+
+        //     return view('orders.index', ['orders' => Order::where('status', $status)->paginate(20)->withQueryString()]);
+        // }
+        // else {
+        //     return view('orders.index', ['orders' => Order::paginate(20)]);
+        // }
+        $status = $request->input('status');
+
+        $orders = Order::when($status, function ($query, $status) {
+                return $query->where('status', $status);
+            })
+            ->paginate()
+            ->withQueryString();
+
+        return view('orders.index', ['orders' => $orders]);
     }
 
     /**
